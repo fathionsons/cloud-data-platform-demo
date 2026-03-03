@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mini-data-platform-pipeline
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      PIPELINE_ENV: local
+      BRONZE_LOCAL_DIR: data/bronze
+      LOG_LEVEL: INFO
+    command: sleep infinity
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: mini-data-platform-postgres
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_DB: analytics
+      POSTGRES_USER: analytics
+      POSTGRES_PASSWORD: analytics
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

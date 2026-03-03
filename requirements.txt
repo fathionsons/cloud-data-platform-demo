@@ -1,0 +1,9 @@
+boto3==1.37.17
+duckdb==1.2.2
+pandas==2.2.3
+pydantic==2.10.6
+requests==2.32.3
+streamlit==1.44.1
+plotly==6.0.1
+dbt-core==1.8.8
+dbt-duckdb==1.8.3

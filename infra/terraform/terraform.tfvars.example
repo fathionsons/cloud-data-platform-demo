@@ -1,0 +1,14 @@
+region       = "us-east-1"
+project_name = "mini-cloud-data-platform"
+env          = "dev"
+
+tags = {
+  Owner   = "your-name"
+  Purpose = "portfolio-demo"
+}
+
+# Keep false unless you intentionally want Terraform to delete a non-empty bucket.
+bucket_force_destroy = false
+
+# Keep false to avoid extra service complexity/cost in this demo.
+create_glue_catalog = false

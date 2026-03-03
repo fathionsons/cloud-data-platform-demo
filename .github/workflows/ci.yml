@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  pull_request:
+    branches: ["*"]
+  workflow_dispatch:
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: make setup
+
+      - name: Lint and format checks
+        run: |
+          ruff check .
+          black --check .
+
+      - name: Unit tests
+        run: pytest
+
+      - name: Ingest local bronze sample
+        run: make ingest-local
+
+      - name: Build dbt models
+        run: make dbt-run
+
+      - name: Run dbt tests
+        run: make dbt-test

@@ -1,0 +1,90 @@
+version: 2
+
+models:
+  - name: bronze_weather_events
+    description: Raw hourly weather events loaded from bronze NDJSON files.
+    columns:
+      - name: observation_ts_utc
+        tests:
+          - not_null
+      - name: location_name
+        tests:
+          - not_null
+
+  - name: silver_weather_events
+    description: Deduplicated and quality-filtered weather events with business keys.
+    columns:
+      - name: observation_nk
+        tests:
+          - not_null
+          - unique
+      - name: source
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["open_meteo", "synthetic_fallback"]
+      - name: observation_ts_utc
+        tests:
+          - not_null
+
+  - name: dim_date
+    description: Calendar dimension at day grain.
+    columns:
+      - name: date_key
+        tests:
+          - not_null
+          - unique
+      - name: is_weekend
+        tests:
+          - accepted_values:
+              values: [0, 1]
+
+  - name: dim_source
+    description: Source system dimension.
+    columns:
+      - name: source_key
+        tests:
+          - unique
+          - not_null
+      - name: source_name
+        tests:
+          - unique
+          - accepted_values:
+              values: ["open_meteo", "synthetic_fallback"]
+
+  - name: dim_location
+    description: Location dimension for tracked cities.
+    columns:
+      - name: location_key
+        tests:
+          - unique
+          - not_null
+      - name: location_name
+        tests:
+          - not_null
+
+  - name: fact_observation
+    description: Fact table at grain of one location, one timestamp, one source.
+    columns:
+      - name: observation_key
+        tests:
+          - not_null
+          - unique
+      - name: date_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: location_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_location')
+              field: location_key
+      - name: source_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_source')
+              field: source_key
