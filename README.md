@@ -208,17 +208,6 @@ docker compose --profile postgres up -d postgres
 - AWS credentials are expected from your environment (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, optional session token).
 - `dbt/profiles.yml` is gitignored; start from `dbt/profiles.yml.example`.
 
-## What This Demo Proves
-- You can provision repeatable cloud storage/IAM foundations with Terraform.
-- You can build a resilient ingestion script with observability basics.
-- You can model analytics data using dbt and dimensional modeling practices.
-- You can deliver usable analytics outputs and a simple BI interface.
-- You can automate checks in CI with clean developer ergonomics.
 
-## Future Improvements
-- Add orchestration (Prefect or Airflow) with scheduling and retries.
-- Add Great Expectations or dbt-expectations for richer data quality rules.
-- Add Glue Data Catalog crawler/table definitions.
-- Add monitoring/alerting (CloudWatch metrics + alarms).
-- Add deployment workflow for Terraform and dashboard hosting.
-- Add incremental dbt models and snapshotting patterns.
+
+![alt text](image.png)
